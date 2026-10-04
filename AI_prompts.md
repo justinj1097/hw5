@@ -227,7 +227,9 @@ write this in the Reflection tab without the quotation marks at the beginning an
 
 ### Follow-up prompt
 
-None needed.
+yes reword it to got the invoice approved and paid
+
+What was lacking: the first version said the agent "quickly paid" the invoice, but agents can only request payments; a human approved it on the board.
 
 ## Problem 10 — Publish to GitHub
 
