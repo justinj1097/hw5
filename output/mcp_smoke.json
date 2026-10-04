@@ -1,0 +1,108 @@
+{
+  "description": "Smoke test of the campus-customs MCP server, called by Claude Code (the vibe coder) through the project's .mcp.json connection (tool names mcp__campus-customs__*). Each output was cross-checked with sqlite3 against data/campus_customs_new.db.",
+  "run_at": "2026-10-03",
+  "vibe_coder": "Claude Code (desktop app, Code tab)",
+  "mcp_config": ".mcp.json",
+  "database": "data/campus_customs_new.db",
+  "session_instruction": "In your vibe coder (Claude Code) add your MCP server to this project so the vibe coder can call the tools. Save the connection JSON text in .mcp.json at the project root (or however your vibe coder saves local MCP server lists). With your vibe coder connected, test each of your three MCP tools. Save the evidence in output/mcp_smoke.json",
+  "tests": [
+    {
+      "ticket": 103,
+      "prompt": "Use the campus-customs MCP tool check_stock for ticket 103: does the shop have 20 of CC-HOOD-NAVY in size M? Report on hand, shortfall, unit cost and list price.",
+      "tool": "check_stock",
+      "mcp_tool_name": "mcp__campus-customs__check_stock",
+      "arguments": {
+        "sku": "CC-HOOD-NAVY",
+        "size": "M",
+        "qty_needed": 20
+      },
+      "output": {
+        "found": true,
+        "sku": "CC-HOOD-NAVY",
+        "name": "Basic Hoodie Big Yale",
+        "size": "M",
+        "on_hand": 8,
+        "location": "Aisle A",
+        "other_sizes_on_hand": {
+          "L": 14,
+          "S": 4,
+          "XL": 6
+        },
+        "unit_cost": 22,
+        "list_price": 58,
+        "qty_needed": 20,
+        "can_fill": false,
+        "shortfall": 12
+      },
+      "db_check": {
+        "sql": "SELECT size, qty, location FROM inventory WHERE sku='CC-HOOD-NAVY'; SELECT unit_cost, list_price FROM pricing WHERE sku='CC-HOOD-NAVY';",
+        "db_values": "inventory M=8 (Aisle A), L=14, S=4, XL=6; pricing unit_cost=22.0, list_price=58.0",
+        "matches": true
+      }
+    },
+    {
+      "ticket": 101,
+      "prompt": "Use the campus-customs MCP tool check_vendor_invoices with invoice_id 501 (linked from ticket 101). Can that vendor ship the CC-TEE-WHITE size S reprint right now? Report the vendor, lead days, open invoices and days overdue.",
+      "tool": "check_vendor_invoices",
+      "mcp_tool_name": "mcp__campus-customs__check_vendor_invoices",
+      "arguments": {
+        "invoice_id": 501
+      },
+      "output": {
+        "found": true,
+        "today": "2026-08-31",
+        "vendor_id": 1,
+        "vendor_name": "Bulldog Print Co",
+        "specialty": "apparel reprint",
+        "lead_days": 5,
+        "open_invoices": [
+          {
+            "invoice_id": 501,
+            "amount": 840,
+            "due_date": "2026-08-28",
+            "description": "Rush reprint CC-TEE-WHITE S",
+            "days_overdue": 3,
+            "is_overdue": true
+          }
+        ],
+        "total_open_amount": 840,
+        "can_ship": false,
+        "blocked_reason": "Bulldog Print Co has 1 open unpaid invoice(s); it will not ship new product until they are paid."
+      },
+      "db_check": {
+        "sql": "SELECT date_today FROM desk; SELECT i.id, i.amount, i.due_date, i.status, v.name, v.specialty, v.lead_days FROM invoices i JOIN vendors v ON v.id = i.vendor_id WHERE i.id = 501;",
+        "db_values": "desk.date_today=2026-08-31; invoice 501 amount=840.0 due=2026-08-28 status=open; vendor Bulldog Print Co, apparel reprint, lead_days=5 (2026-08-31 minus 2026-08-28 = 3 days overdue)",
+        "matches": true
+      }
+    },
+    {
+      "ticket": 102,
+      "prompt": "Use the campus-customs MCP tool get_rent_due for lease 1 (ticket 102). How much rent is due, when, how many days from the shop's today, and can checking cover it?",
+      "tool": "get_rent_due",
+      "mcp_tool_name": "mcp__campus-customs__get_rent_due",
+      "arguments": {
+        "lease_id": 1
+      },
+      "output": {
+        "found": true,
+        "today": "2026-08-31",
+        "lease_id": 1,
+        "space_name": "Chapel Street shop",
+        "landlord": "Elm City Properties",
+        "monthly_rent": 2400,
+        "next_due": "2026-09-02",
+        "days_until_due": 2,
+        "is_overdue": false,
+        "notes": null,
+        "checking_balance": 3400,
+        "balance_after_rent": 1000,
+        "can_afford": true
+      },
+      "db_check": {
+        "sql": "SELECT date_today FROM desk; SELECT * FROM leases WHERE id = 1; SELECT * FROM cash_accounts;",
+        "db_values": "desk.date_today=2026-08-31; lease 1 Chapel Street shop, Elm City Properties, monthly_rent=2400.0, next_due=2026-09-02, notes empty; cash_accounts checking balance=3400.0 (3400 - 2400 = 1000)",
+        "matches": true
+      }
+    }
+  ]
+}

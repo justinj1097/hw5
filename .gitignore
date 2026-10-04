@@ -1,0 +1,23 @@
+# secrets: never commit the real key
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node / Vite
+node_modules/
+frontend/dist/
+
+# local tooling and scratch
+.claude/
+.DS_Store
+*.tmp
+output/*.json.tmp
+data/*.db-wal
+data/*.db-shm
+data/*.db-journal

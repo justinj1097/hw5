@@ -1,0 +1,176 @@
+{
+  "run": {
+    "date": "2026-10-04 (UTC)",
+    "shop_date": "2026-08-31",
+    "database": "data/campus_customs_new.db (reset from data/campus_customs.db before the run)",
+    "model": "gpt-6-luna via Portkey (every response served by gpt-6-luna-global)",
+    "order": [
+      101,
+      102,
+      103
+    ],
+    "starting_checking_balance": 3400.0,
+    "ending_checking_balance": 152.0,
+    "ending_balance_matches_cash_accounts": true,
+    "total_paid_out": 3248.0,
+    "team_runs": 4,
+    "model_calls": 69,
+    "tool_calls": 81,
+    "delegations": 10,
+    "tokens": {
+      "input": 244078,
+      "output": 13943
+    }
+  },
+  "tickets": [
+    {
+      "id": 101,
+      "type": "customer_order",
+      "requester": "Tauhid Zaman",
+      "final_status": "resolved",
+      "outcome": "Size S tee was out of stock (0 on hand) and the reprint vendor was blocked by overdue invoice 501. Invoice 501 ($840) was paid and a 1-unit reprint PO ($8) placed, arriving 2026-09-05; the customer got a draft update (not sent).",
+      "runs": [
+        {
+          "run_id": "4b430bbb0577",
+          "boss_final_status": "waiting_on_approval",
+          "model_calls": 21,
+          "tool_calls": 27,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> customer_service",
+            "boss -> inventory -> accounting"
+          ]
+        }
+      ],
+      "agents": {
+        "boss": "Read the ticket, sent Inventory and Customer Service, weighed cash ($848 pending vs. $2,400 rent due in 2 days), parked the ticket on waiting_on_approval with the order of approvals (invoice before PO).",
+        "inventory": "check_stock: CC-TEE-WHITE S = 0 (short 1). check_vendor_invoices/list_vendors: Bulldog Print Co blocked by invoice 501 ($840, 3 days overdue). estimate_restock: 1 unit = $8, 5-day lead. Handed the money side to Accounting.",
+        "accounting": "get_cash_position: checking $3,400, nothing pending. Filed approval request 1 (pay invoice 501, $840) and request 2 (PO 1 x CC-TEE-WHITE S, $8), noting the PO must follow the invoice.",
+        "customer_service": "Saved draft 1 to Tauhid Zaman: size S unavailable, restock being arranged, nothing ordered yet. Never sent.",
+        "facilities": "Not involved."
+      },
+      "human_approvals": [
+        {
+          "request_id": 1,
+          "kind": "invoice",
+          "ref": "invoice 501",
+          "payee": "Bulldog Print Co",
+          "amount": 840.0,
+          "approved_by": "Justin",
+          "payment_id": 1,
+          "checking_after": 2560.0,
+          "effect": "invoices.status 501 -> paid"
+        },
+        {
+          "request_id": 2,
+          "kind": "purchase_order",
+          "ref": "PO 1: 1 x CC-TEE-WHITE S @ $8",
+          "payee": "Bulldog Print Co",
+          "amount": 8.0,
+          "approved_by": "Justin",
+          "payment_id": 2,
+          "checking_after": 2552.0,
+          "effect": "purchase_orders row 1, ETA 2026-09-05"
+        }
+      ],
+      "cash_change": -848.0,
+      "drafts": [
+        1
+      ],
+      "follow_up": "Draft 1 was written before the PO was approved; update it with the 2026-09-05 arrival before sending."
+    },
+    {
+      "id": 102,
+      "type": "rent_notice",
+      "requester": "Elm City Properties",
+      "final_status": "resolved",
+      "outcome": "The rent notice matched lease 1 ($2,400 due 2026-09-02, 2 days out). Rent was approved and paid; next_due moved to 2026-10-02.",
+      "runs": [
+        {
+          "run_id": "e7dd686b5692",
+          "boss_final_status": "waiting_on_approval",
+          "model_calls": 16,
+          "tool_calls": 17,
+          "delegations": [
+            "boss -> facilities",
+            "boss -> facilities -> accounting"
+          ]
+        }
+      ],
+      "agents": {
+        "boss": "Sent the ticket to Facilities only, confirmed the cash picture, set waiting_on_approval for rent request 3.",
+        "facilities": "get_rent_due(1): $2,400 due 2026-09-02, 2 days from the shop date, so the email was accurate. Checked cash ($2,552). Handed the payment to Accounting.",
+        "accounting": "Confirmed no other pending requests; filed approval request 3 (rent, lease 1, $2,400), leaving $152 if approved.",
+        "inventory": "Not involved.",
+        "customer_service": "Not involved."
+      },
+      "human_approvals": [
+        {
+          "request_id": 3,
+          "kind": "rent",
+          "ref": "lease 1 (Chapel Street shop)",
+          "payee": "Elm City Properties",
+          "amount": 2400.0,
+          "approved_by": "Justin",
+          "payment_id": 3,
+          "checking_after": 152.0,
+          "effect": "leases.next_due 2026-09-02 -> 2026-10-02"
+        }
+      ],
+      "cash_change": -2400.0,
+      "drafts": []
+    },
+    {
+      "id": 103,
+      "type": "price_override",
+      "requester": "Yale AI Club",
+      "final_status": "resolved",
+      "outcome": "Only 8 of 20 size M navy hoodies on hand. Accounting approved a 10% bulk price of $52.20 (57.85% margin, above the $22 cost). The 12-unit restock ($264) was unaffordable with $152 in checking, so the manager decided not to restock; the club was offered the 8 on hand for $417.60 (draft 4, not sent).",
+      "runs": [
+        {
+          "run_id": "a5bf8b8d8cdd",
+          "boss_final_status": "blocked",
+          "model_calls": 22,
+          "tool_calls": 28,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> accounting",
+            "boss -> customer_service",
+            "boss -> customer_service"
+          ]
+        },
+        {
+          "run_id": "a7ac8241c259",
+          "boss_final_status": "resolved",
+          "model_calls": 10,
+          "tool_calls": 9,
+          "delegations": [
+            "boss -> customer_service"
+          ]
+        }
+      ],
+      "agents": {
+        "boss": "Run 1: sent Inventory, Accounting and Customer Service; approved the $52.20 price; set blocked because the 12-unit restock needed a funding decision. Run 2: followed the manager's note, had Customer Service revise the offer, set resolved.",
+        "inventory": "check_stock: 8 on hand, short 12. list_vendors: Bulldog Print Co can ship (invoice 501 already paid). estimate_restock: 12 units = $264, 5-day lead.",
+        "accounting": "Four check_discount runs; recommended $52.20/unit (10% off $58, $30.20 profit/unit, 57.85% margin). Flagged $264 restock > $152 checking; filed no PO.",
+        "customer_service": "Drafts 2 and 3 in run 1 (superseded), then draft 4 in run 2: 8 hoodies at $52.20 = $417.60, the other 12 can't be supplied now. Never sent.",
+        "facilities": "Not involved."
+      },
+      "human_approvals": [],
+      "human_decisions": [
+        {
+          "by": "Justin (manager)",
+          "via": "POST /api/tickets/103/note",
+          "decision": "No restock for the other 12 (only $152 in checking, no money coming in); offer the 8 on hand at the approved $52.20 and close the ticket."
+        }
+      ],
+      "cash_change": 0.0,
+      "drafts": [
+        2,
+        3,
+        4
+      ],
+      "follow_up": "Send draft 4 (drafts 2 and 3 are superseded) if the club should get the offer."
+    }
+  ]
+}

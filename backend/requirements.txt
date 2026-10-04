@@ -1,0 +1,10 @@
+# Python dependencies for the MCP server and the FastAPI agent backend (versions this was tested with).
+# Install from the hw5/ folder:  python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+pydantic-ai-slim[openai,mcp]==2.54.0
+fastmcp==4.0.10
+mcp==2.3.0
+openai==3.24.0
+fastapi==0.142.2
+uvicorn[standard]==0.54.0
+pytest==9.1.1
+pytest-asyncio==1.4.0

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Customs: Resolved Board</title>
+<style>
+  :root { --bg: #0b0a0d; --panel: #16131a; --line: #2e2734; --pink: #ff3d9a; --pink-soft: #ffb3d6; --text: #f6eef3; --muted: #a8949f; --good: #7fe3c8; --warn: #ffd36e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: radial-gradient(900px 400px at 90% -10%, rgba(255,61,154,.16), transparent 60%), var(--bg); color: var(--text);
+         font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  header { padding: 32px 40px 8px; max-width: 1180px; margin: 0 auto; }
+  h1 { margin: 0; font: 600 30px "Iowan Old Style", Palatino, Georgia, serif; }
+  h1 span { color: var(--pink); font-style: italic; }
+  .sub { color: var(--muted); margin: 6px 0 0; }
+  .summary { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0 0; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 16px; }
+  .stat b { display: block; font-size: 20px; color: var(--pink-soft); font-family: Georgia, serif; }
+  .stat span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  main { max-width: 1180px; margin: 0 auto; padding: 8px 40px 60px; }
+  section { margin-top: 36px; padding: 24px; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; }
+  section h2 { margin: 0; font: 600 22px "Iowan Old Style", Palatino, Georgia, serif; }
+  .chip { display: inline-block; margin-left: 10px; padding: 2px 12px; border-radius: 999px; font: 700 12px sans-serif; background: #133a30; color: var(--good); vertical-align: middle; }
+  .chip.warn { background: #3b2e10; color: var(--warn); }
+  figure { margin: 16px 0 0; }
+  img { width: 100%; border-radius: 12px; border: 1px solid var(--line); box-shadow: 0 16px 40px rgba(0,0,0,.5); display: block; }
+  figcaption { color: var(--muted); margin-top: 10px; font-size: 14px; }
+  ul { margin: 12px 0 0; padding-left: 20px; }
+  li { margin: 4px 0; }
+  code { background: #23202a; color: var(--pink-soft); padding: 1px 6px; border-radius: 5px; font-size: 13px; }
+  .money { font-family: ui-monospace, Menlo, monospace; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 900px) { .two { grid-template-columns: 1fr; } }
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 0 0 40px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Campus Customs <span>· Resolved Board</span></h1>
+  <p class="sub">Screenshots of the React board (<code>frontend/</code>, http://localhost:5173) from the full run on a freshly reset database: tickets run in order 101 → 102 → 103. Every payment was approved by a person (Justin) on the board.</p>
+  <div class="summary">
+    <div class="stat"><b>3 / 3</b><span>tickets resolved</span></div>
+    <div class="stat"><b class="money">$3,400.00</b><span>starting checking</span></div>
+    <div class="stat"><b class="money">−$3,248.00</b><span>3 approved payments</span></div>
+    <div class="stat"><b class="money">$152.00</b><span>ending checking = cash_accounts</span></div>
+    <div class="stat"><b>gpt-6-luna</b><span>only model served</span></div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <h2>Ticket 101: Bulldog tee <span class="chip">Resolved</span></h2>
+    <figure>
+      <img src="resolved_board_images/ticket_101_resolved.jpg" alt="Board with ticket 101 stamped resolved, checking $2,552 and the shift report">
+      <figcaption>
+        After the run, the Boss parked the ticket on <i>waiting on approval</i> with two cheques. On the floor map, Boss → Inventory → Accounting and Boss → Customer Service are lit, and Facilities stayed off the clock. Approving invoice 501 ($840) and then the purchase order ($8) stamped the ticket <b>RESOLVED</b> and counted checking down from $3,400 to <b>$2,552</b>. The register tape shows both payments signed "Justin".
+      </figcaption>
+    </figure>
+    <ul>
+      <li>21 model calls · 27 tool calls · 3 hand-offs. The tee was out of stock, the vendor was unblocked by paying invoice 501, a reprint arrives 2026-09-05, and draft 1 went to Tauhid (not sent).</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Ticket 102: Rent due <span class="chip">Resolved</span></h2>
+    <figure>
+      <img src="resolved_board_images/ticket_102_resolved.jpg" alt="Board with ticket 102 stamped resolved and checking at $152">
+      <figcaption>
+        A single path: Boss → Facilities → Accounting. Inventory and Customer Service stayed on the bench. Facilities checked the email against lease 1 ($2,400 due 2026-09-02), and Accounting filed rent request 3. Approving it stamped the ticket <b>RESOLVED</b> and dropped checking from $2,552 to <b>$152</b>. The tape now lists all three payments.
+      </figcaption>
+    </figure>
+    <ul>
+      <li>16 model calls · 17 tool calls · 2 hand-offs. The lease's next due date moved to 2026-10-02.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Ticket 103: Bulk hoodie discount <span class="chip">Resolved</span></h2>
+    <div class="two">
+      <figure>
+        <img src="resolved_board_images/ticket_103_blocked_manager_note.jpg" alt="Ticket 103 blocked with the manager-note box filled in">
+        <figcaption>
+          <span class="chip warn">Step 1 · Blocked</span> The first run priced the order at $52.20 each (10% off, still well above the $22 cost) but couldn't fund the 12-unit restock: $264 against $152 in checking. The board asked for a human call, and Justin pinned a manager note: no restock, offer the 8 on hand, close.
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="resolved_board_images/ticket_103_resolved.jpg" alt="Ticket 103 resolved; all three tickets stamped and checking at $152">
+        <figcaption>
+          <span class="chip">Step 2 · Resolved</span> The second run followed the note: the Boss brought in only Customer Service, which saved draft 4 (8 × $52.20 = $417.60; the other 12 can't be supplied now). All three stubs are stamped RESOLVED. Checking stayed at <b>$152</b>, because nothing was paid for 103.
+        </figcaption>
+      </figure>
+    </div>
+    <ul>
+      <li>Run 1: 22 model calls · 28 tool calls · 4 hand-offs. Run 2: 10 model calls · 9 tool calls · 1 hand-off. Facilities was never called.</li>
+    </ul>
+  </section>
+</main>
+<footer>Details: <code>desk_tickets.html</code> (expected vs actual, plus the Cash tab) · <code>resolved_tickets.json</code> · <code>audit_trail.json</code></footer>
+</body>
+</html>
